@@ -33,7 +33,7 @@ const app = {
     {
       name: 'Anh Đã Ổn Hơn',
       singer: 'MCK',
-      path: './asset/music/AnhDaonHon.mp3',
+      path: './asset/music/AnhDaOnHon.mp3',
       image: './asset/img/img1.avif'
     },
     {
