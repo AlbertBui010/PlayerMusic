@@ -115,6 +115,18 @@ const app = {
     })
     playlist.innerHTML = htmls.join('')
   },
+  audioPlay: function() {
+    audio.addEventListener('timeupdate', () => {
+      const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
+      progress.value = progressPercent
+
+      // Tua
+      progress.oninput = function(e) {
+        const seekTime = e.target.value * audio.duration / 100
+        audio.currentTime = seekTime
+      }
+    })
+  },
   defineProperties: function() {
     Object.defineProperty(this, 'currentSong', {
       get: function() {
@@ -152,21 +164,21 @@ const app = {
         audio.play()
         cdThumbAnimate.play()
       }
-      // Range
-      audio.ontimeupdate = function() {
-        if (audio.duration) {
-          const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
-          progress.value = progressPercent
-        }
-      }  
-      // Tua
-      progress.oninput = function(e) {
-        const seekTime = e.target.value * audio.duration / 100
-        audio.currentTime = seekTime
-      }
+      // // Range
+      // audio.ontimeupdate = function() {
+      //   if (audio.duration) {
+      //     const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
+      //     progress.value = progressPercent
+      //   }
+      // }  
+      // // Tua
+      // progress.oninput = function(e) {
+      //   const seekTime = e.target.value * audio.duration / 100
+      //   audio.currentTime = seekTime
+      // }
     }
 
-    // Click Next or Previous
+    // Click Next
     nextBtn.onclick = function() {
       if (randomBtn.classList.contains('active')) {
         app.playRandomSong()
@@ -179,7 +191,7 @@ const app = {
       app.scrollToActiveSong()
       app.render()
     }
-
+    // Click Previous
     prevBtn.onclick = function() {
       if (randomBtn.classList.contains('active')) {
         app.playRandomSong()
@@ -192,7 +204,7 @@ const app = {
       app.render()
     }
 
-    // Shuffle
+    // Click Shuffle
     randomBtn.onclick = function() {
       if (randomBtn.classList.contains('active')) {
         randomBtn.classList.remove('active')
@@ -201,7 +213,7 @@ const app = {
       }
     }
 
-    // Repeat
+    // Click Repeat
     repeatBtn.onclick = function() {
       if (repeatBtn.classList.contains('active')) {
         repeatBtn.classList.remove('active')
@@ -209,6 +221,7 @@ const app = {
         repeatBtn.classList.add('active')
       }
     }
+
     // When ended
     audio.onended = function() {
       if (repeatBtn.classList.contains('active')) {
@@ -237,6 +250,9 @@ const app = {
         cdThumbAnimate.play()
       } 
     }
+
+    // When audio play
+    this.audioPlay()
   },
   scrollToActiveSong: function() {
     setTimeout(() => {
@@ -274,6 +290,7 @@ const app = {
     this.loadCurrentSong()
   },
   start: function() {
+    progress.value = 0
     this.defineProperties()
     this.handleEvents()
     this.loadCurrentSong()
