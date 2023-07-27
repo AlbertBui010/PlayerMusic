@@ -297,7 +297,6 @@ const app = {
   },
   start: function () {
     progress.value = 0;
-    video.play();
     this.defineProperties();
     this.handleEvents();
     this.loadCurrentSong();
